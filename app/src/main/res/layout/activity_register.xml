@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:padding="20dp">
+    
+    <TextView
+        android:id="@+id/txvTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@strings/app_name"
+        android:textSize="50sp"
+        android:textFontWeight="700"
+        />
+    
+    <TextView
+        android:id="@+id/txvWelcomeMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Now you're registered! Come back to login page, please."
+        android:textSize="25sp"
+        android:layout_marginTop="15sp"
+        />
+
+    <Button
+        android:id="@+id/btnBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Back to login page"
+        android:textSize="25sp"
+        android:padding="15sp"
+        android:layout_marginTop="15sp"
+        />
+
+    </LinearLayout>
