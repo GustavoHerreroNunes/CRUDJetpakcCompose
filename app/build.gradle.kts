@@ -73,4 +73,7 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    implementation("com.google.code.gson:gson:2.11.0")
+    implementation("ru.gildor.coroutines:kotlin-coroutines-android:1.0")
 }

@@ -14,29 +14,128 @@ import br.com.fiap.aplicacaovazia.ui.theme.AplicacaoVaziaTheme
 import android.util.Log
 import android.widget.Toast
 import android.content.Intent
-import br.com.fiap.aplicacaovazia.databinding.ActivityMainBinding
-import br.com.fiap.aplicacaovazia.DiveInActivity
+
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Button
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+
+import androidx.activity.viewModels
+
+import br.com.fiap.aplicacaovazia.Contato
+import br.com.fiap.aplicacaovazia.ContatoViewModel
+import br.com.fiap.aplicacaovazia.Constants
 
 class MainActivity : ComponentActivity() {
 
-    private lateinit var binding : ActivityMainBinding
+    val viewModel by viewModels<ContatoViewModel>()
+
+    fun add(contact : Contato){
+        viewModel.contactsList.add(contact)
+        Log.d(Constants.MAIN_TAG, "Contact added: $contact")
+        Log.d(Constants.MAIN_TAG, "Contacts.size: ${viewModel.contactsList.size}")
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContent {
+            AplicacaoVaziaTheme {
+                // A surface container using the 'background' color from the theme
+                Surface(
+                    color = MaterialTheme.colors.background
+                ) {
+                    Form(add)
+                }
+            }
 
-        binding = ActivityMainBinding.inflate(layoutInflater)
-
-        setContentView(binding.root)
-        
-        Log.i("AppTest", "I'm working")
-
-        binding.btnDiveIn.setOnClickListener{
-            Log.i("AppTest", "Button clicked. Diving in...")
-            Toast.makeText(this, "Diving in...", Toast.LENGTH_SHORT).show()
-            
-            //Create an Intent to navigate to the DiveInActivity
-            val intent = Intent(this, DiveInActivity::class.java)
-            startActivity(intent)
         }
     }
+}
+
+@Composable
+fun Form( viewModel: ContatoViewModel ){
+    var name by remember { 
+        mutableStateOf("Emmet Brown")
+    }
+    var phone by remember { 
+        mutableStateOf("(11) 99999-9999")
+    }
+    var email by remember { 
+        mutableStateOf("emmetbrown@email.com")
+    }
+
+    //Like React, we need to use a function to change the state
+    fun setName(name: String){
+        Log.d("Form", "Name: $name")
+        name = name
+    }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(10.dp)
+    ) {
+
+        Text(
+            text = "Hello, World!",
+            fontSize = 24.sp,
+        )
+        OutlinedTextField(
+            modifier = Modifier
+                .fillMaxSize(),
+            value = name,
+            onValueChange = { name = it },
+            label = { Text("Name") }
+        )
+        OutlinedTextField(
+            modifier = Modifier
+                .fillMaxSize(),
+            value = name,
+            onValueChange = { phone = it },
+            label = { Text("Phone") }
+        )
+        OutlinedTextField(
+            modifier = Modifier
+                .fillMaxSize(),
+            value = name,
+            onValueChange = { email = it },
+            label = { Text("Email") }
+        )
+        Button(
+            onClick = {
+                val contact = Contato(
+                    nome = name,
+                    telefone = phone,
+                    email = email
+                )
+                viewModel.saveContact(contact)
+                // viewModel.add(contact)
+                
+                Log.d("Form", "Button clicked")
+                Toast.makeText(
+                    LocalContext.current,
+                    "Hello, $name",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        ) {
+            Text("Salvar")
+        }
+
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun FormPreview() {
+    Form()
 }
