@@ -47,16 +47,72 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        viewModel.getContacts()
         setContent {
             AplicacaoVaziaTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     color = MaterialTheme.colors.background
                 ) {
-                    Form(add)
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(color = Color.Cyan)
+                            .padding(10.dp)
+                    ){
+                        Column(
+                            modifier = Modifier
+                                .fillMaxHeight(0.5f)
+                                .padding(10.dp)
+                        ){
+                            Form(viewModel)
+                        }
+                        Column(
+                            modifier = Modifier
+                                .fillMaxHeight(0.5f)
+                                .background(color = Color.Gray)
+                                .padding(10.dp) 
+                        ){
+                            LazyColumn(){
+                                items(viewModel.contactsList){ contact ->
+                                    ContactItem(contact)
+                                }
+                            }
+                        }
+                    }
                 }
             }
 
+        }
+    }
+}
+
+@Composable
+fun ContactItem(contact: Contato){
+    Card(
+        elevation = CardDefaults.cardElevation(10.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(10.dp)
+    ){
+        Column(
+            verticalArrangement = Arrangement.SpacedEvenly,
+            horizontalArrangement = Arrangement.CenterHorizontal,
+            modifier = Modifier
+                .padding(10.dp)
+        ){
+            Text(
+                text = contact.name,
+                fontSize = 24.sp
+            )
+            Text(
+                text = contact.phone,
+                fontSize = 24.sp
+            )
+            Text(
+                text = contact.email,
+                fontSize = 24.sp
+            )
         }
     }
 }
